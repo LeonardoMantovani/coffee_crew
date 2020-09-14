@@ -3,6 +3,7 @@ import 'package:coffee_crew/shared/custom_input_decoration.dart';
 import 'package:coffee_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
+/// The Sign Up Screen
 class SignUp extends StatefulWidget {
 
   final Function toggleView;

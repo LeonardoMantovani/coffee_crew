@@ -1,4 +1,5 @@
 import 'package:coffee_crew/models/user.dart';
+import 'package:coffee_crew/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /// Manage all authentication processes of the app using FirebaseAuth
@@ -18,8 +19,7 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
-  //region ANONYMOUS SIGN IN
-
+  // ANONYMOUS SIGN IN
   Future signInAnon() async {
     try {
       AuthResult result = await _auth.signInAnonymously();
@@ -31,10 +31,7 @@ class AuthService {
     }
   }
 
-  //endregion
-
-  //region EMAIL/PASSWORD SIGN IN
-
+  // EMAIL/PASSWORD SIGN IN
   Future signInEmailPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -45,24 +42,24 @@ class AuthService {
     }
   }
 
-  //endregion
-
-  //region EMAIL/PASSWORD SIGN UP
-
+  // EMAIL/PASSWORD SIGN UP
   Future signUpEmailPassword(String email, String password) async {
     try {
+      // sign up the new user
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      return _userFromFirebaseUser(result.user);
+      User user = _userFromFirebaseUser(result.user);
+
+      //  create a new document in the database for the user using his uid
+      await DatabaseService(uid: user.uid).updateUserData('0', 'New Crew Member', 100);
+
+      return user;
     } catch (e) {
       print(e);
       return null;
     }
   }
 
-  //endregion
-
-  //region SIGN OUT
-
+  // SIGN OUT
   Future signOut() async {
     try {
       return await _auth.signOut();
@@ -71,7 +68,5 @@ class AuthService {
       return null;
     }
   }
-
-  //endregion
 
 }

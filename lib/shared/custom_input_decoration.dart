@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Customized Input Decoration Widget for TextFormField's decoration parameters
 customInputDecoration(String hintText) {
   return InputDecoration(
       hintText: hintText,
