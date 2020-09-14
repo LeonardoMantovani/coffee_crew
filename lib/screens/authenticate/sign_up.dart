@@ -2,23 +2,24 @@ import 'package:coffee_crew/services/auth.dart';
 import 'package:coffee_crew/shared/constants.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
+class SignUp extends StatefulWidget {
 
   final Function toggleView;
 
-  SignIn( this.toggleView );
+  SignUp( this.toggleView );
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
 
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   String email = '';
   String password = '';
+  String repeatPassword = '';
   String error = '';
 
   @override
@@ -28,11 +29,11 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0,
-        title: Text('Sign In to Coffee Crew'),
+        title: Text('Sign Up to Coffee Crew'),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person, color: Colors.white,),
-            label: Text('Sign Up', style: TextStyle(color: Colors.white),),
+            label: Text('Sign In', style: TextStyle(color: Colors.white),),
             onPressed: () {
               widget.toggleView();
             },
@@ -42,7 +43,7 @@ class _SignInState extends State<SignIn> {
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
         child: Form(
-            key: _formKey,
+          key: _formKey,
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20.0,),
@@ -76,16 +77,31 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height: 20.0,),
                 //endregion
 
-                //region SIGN IN BUTTON
+                //region REPEAT PASSWORD FIELD
+                TextFormField(
+                  decoration: textInputDecoration('repeat password'),
+                  validator: (value) => (value != password) ? "Passwords don't match" : null,
+                  textAlign: TextAlign.center,
+                  obscureText: true,
+                  onChanged: (value) {
+                    setState(() {
+                      repeatPassword = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 20.0,),
+                //endregion
+
+                //region SIGN UP BUTTON
                 RaisedButton(
                   color: Colors.brown[900],
-                  child: Text('Sign In', style: TextStyle(color: Colors.white),),
+                  child: Text('Sign Up', style: TextStyle(color: Colors.white),),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      dynamic result = await _authService.signInEmailPassword(email, password);
+                      dynamic result = await _authService.signUpEmailPassword(email, password);
                       if (result == null){
                         setState(() {
-                          error = 'Wrong Credentials';
+                          error = 'Please use a valid email address';
                         });
                       }
                       // if the result is not null the wrapper widget will automatically show the home widget
@@ -94,7 +110,6 @@ class _SignInState extends State<SignIn> {
                 ),
                 SizedBox(height: 12.0,),
                 Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0),)
-                //endregion
                 //endregion
               ],
             )
