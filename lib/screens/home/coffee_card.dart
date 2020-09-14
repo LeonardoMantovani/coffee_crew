@@ -13,6 +13,7 @@ class CoffeeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
+        color: Colors.brown[50],
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
           leading: CircleAvatar(
@@ -20,7 +21,7 @@ class CoffeeCard extends StatelessWidget {
             backgroundColor: Colors.brown[coffee.strength],
           ),
           title: Text(coffee.name),
-          subtitle: Text('Takes ${coffee.sugars} sugars'),
+          subtitle: Text('Takes ${coffee.sugars} sugar(s)'),
         ),
       ),
     );

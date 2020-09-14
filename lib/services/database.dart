@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee_crew/models/coffee.dart';
+import 'package:coffee_crew/models/user.dart';
 
 /// Manage all database processes of the app using Cloud Firestore
 class DatabaseService {
@@ -22,13 +23,28 @@ class DatabaseService {
     }).toList();
   }
 
+  // create a UserData model from a DocumentSnapshot
+  UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
+    return UserData(
+      uid: uid,
+      name: snapshot.data['name'],
+      sugars: snapshot.data['sugars'],
+      strength: snapshot.data['strength'],
+    );
+  }
+
   // get coffees stream
   Stream<List<Coffee>> get coffeeStream {
     // the snapshots function returns to the stream an "instance of the database" every time it changes
     return coffeeCollection.snapshots().map(_coffeeListFromSnapshot);
   }
 
-  Future updateUserData(String sugars, String name, int strength) async {
+  // get user document stream
+  Stream<UserData> get userDataStream {
+    return coffeeCollection.document(uid).snapshots().map(_userDataFromSnapshot);
+  }
+
+  Future updateUserData({ String sugars, String name, int strength }) async {
     return await coffeeCollection.document(uid).setData({
       'sugars': sugars,
       'name': name,
