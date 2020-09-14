@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
     return StreamProvider<List<Coffee>>.value(
       value: DatabaseService().coffeeStream,
       child: Scaffold(
-        backgroundColor: Colors.brown[100],
+        // backgroundColor: Colors.brown[100],
         appBar: AppBar(
           title: Text('Cofee Crew'),
           backgroundColor: Colors.brown[400],
@@ -47,7 +47,15 @@ class Home extends StatelessWidget {
             ),
           ],
         ),
-        body: CoffeeList(),
+        body: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/coffee_bg.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: CoffeeList()
+        ),
       ),
     );
   }

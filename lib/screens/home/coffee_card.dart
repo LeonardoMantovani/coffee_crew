@@ -19,6 +19,7 @@ class CoffeeCard extends StatelessWidget {
           leading: CircleAvatar(
             radius: 25.0,
             backgroundColor: Colors.brown[coffee.strength],
+            backgroundImage: AssetImage('assets/coffee_icon.png'),
           ),
           title: Text(coffee.name),
           subtitle: Text('Takes ${coffee.sugars} sugar(s)'),
