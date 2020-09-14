@@ -1,5 +1,6 @@
 import 'package:coffee_crew/services/auth.dart';
-import 'package:coffee_crew/shared/constants.dart';
+import 'package:coffee_crew/shared/custom_input_decoration.dart';
+import 'package:coffee_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -16,6 +17,7 @@ class _SignInState extends State<SignIn> {
 
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String email = '';
   String password = '';
@@ -23,16 +25,17 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // show the loading widget if the loading flag is set to true, otherwise show the scaffold
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0,
-        title: Text('Sign In to Coffee Crew'),
+        title: Text('Sign In to Coffee Crew', style: TextStyle(color: Colors.brown[50]),),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.person, color: Colors.white,),
-            label: Text('Sign Up', style: TextStyle(color: Colors.white),),
+            icon: Icon(Icons.person, color: Colors.brown[50],),
+            label: Text('Sign Up', style: TextStyle(color: Colors.brown[50]),),
             onPressed: () {
               widget.toggleView();
             },
@@ -49,7 +52,7 @@ class _SignInState extends State<SignIn> {
 
                 //region EMAIL FIELD
                 TextFormField(
-                  decoration: textInputDecoration('email'),
+                  decoration: customInputDecoration('email'),
                   validator: (value) => value.isEmpty ? 'Please, enter an email address' : null,
                   textAlign: TextAlign.center,
                   onChanged: (value) {
@@ -63,7 +66,7 @@ class _SignInState extends State<SignIn> {
 
                 //region PASSWORD FIELD
                 TextFormField(
-                  decoration: textInputDecoration('password'),
+                  decoration: customInputDecoration('password'),
                   validator: (value) => (value.length < 6) ? 'Please, enter a password with 6+ characters' : null,
                   textAlign: TextAlign.center,
                   obscureText: true,
@@ -79,12 +82,15 @@ class _SignInState extends State<SignIn> {
                 //region SIGN IN BUTTON
                 RaisedButton(
                   color: Colors.brown[900],
-                  child: Text('Sign In', style: TextStyle(color: Colors.white),),
+                  child: Text('Sign In', style: TextStyle(color: Colors.brown[50]),),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
+                      // set the loading flag to true (to show the loading widget)
+                      setState(() => loading = true);
                       dynamic result = await _authService.signInEmailPassword(email, password);
                       if (result == null){
                         setState(() {
+                          loading = false;
                           error = 'Wrong Credentials';
                         });
                       }

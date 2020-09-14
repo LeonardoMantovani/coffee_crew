@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-textInputDecoration(String hintText) {
+customInputDecoration(String hintText) {
   return InputDecoration(
       hintText: hintText,
       fillColor: Colors.brown[50],
