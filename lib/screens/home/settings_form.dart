@@ -105,7 +105,7 @@ class _SettingsFormState extends State<SettingsForm> {
 
                 //region SAVE BUTTON
                 RaisedButton(
-                    color: Colors.brown[900],
+                    color: Colors.brown[800],
                     child: Text('Save', style: TextStyle(color: Colors.brown[50], fontSize: 18.0),),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {

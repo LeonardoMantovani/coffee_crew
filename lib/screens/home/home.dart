@@ -30,7 +30,7 @@ class Home extends StatelessWidget {
         // backgroundColor: Colors.brown[100],
         appBar: AppBar(
           title: Text('Cofee Crew'),
-          backgroundColor: Colors.brown[400],
+          backgroundColor: Colors.brown[700],
           elevation: 0,
           actions: <Widget>[
             FlatButton.icon(
@@ -39,11 +39,6 @@ class Home extends StatelessWidget {
               onPressed: () async {
                 _authService.signOut();
               },
-            ),
-            FlatButton.icon(
-              icon: Icon(Icons.settings, color: Colors.brown[50],),
-              label: Text('Settings', style: TextStyle(color: Colors.brown[50]),),
-              onPressed: () => _showSettingsPanel(),
             ),
           ],
         ),
@@ -55,6 +50,18 @@ class Home extends StatelessWidget {
               ),
             ),
             child: CoffeeList()
+        ),
+        floatingActionButton: Container(
+          margin: EdgeInsets.only(bottom: 50.0),
+          height: 70.0,
+          width: 70.0,
+          child: FittedBox(
+            child: FloatingActionButton(
+              backgroundColor: Colors.brown[700],
+              child: Icon(Icons.settings, color: Colors.brown[50], size: 30.0,),
+              onPressed: () => _showSettingsPanel(),
+            ),
+          ),
         ),
       ),
     );
